@@ -11,6 +11,7 @@ import (
 
 	"github.com/joho/godotenv"
 	test_task "github.com/usmonzodasomon/test-task"
+	"github.com/usmonzodasomon/test-task/db"
 	"github.com/usmonzodasomon/test-task/internal/handler"
 	"github.com/usmonzodasomon/test-task/internal/repository"
 	"github.com/usmonzodasomon/test-task/internal/service"
@@ -23,7 +24,8 @@ func main() {
 		logg.Error("Failed to load godotenv", logger.Err(err))
 	}
 
-	repos := repository.NewRepository()
+	dbConn := db.InitDB()
+	repos := repository.NewRepository(dbConn)
 	service := service.NewService(repos)
 	handler := handler.NewHandler(service)
 
@@ -40,7 +42,12 @@ func main() {
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
 	<-ch
 
-	logg.Info("Server closed...")
+	logg.Info("Closing server...")
+
+	if err := db.CloseDbConnection(dbConn); err != nil {
+		logg.Error(err.Error())
+	}
+
 	const timeout = 5 * time.Second
 
 	ctx, shutdown := context.WithTimeout(context.Background(), timeout)
@@ -50,4 +57,5 @@ func main() {
 		logg.Error("Error server shutting down: ", logger.Err(err))
 		return
 	}
+	logg.Info("Server closed...")
 }
