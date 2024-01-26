@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/usmonzodasomon/test-task/models"
+	"github.com/usmonzodasomon/test-task/internal/models"
 	"gorm.io/gorm"
 )
 

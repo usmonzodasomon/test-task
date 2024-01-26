@@ -1,8 +1,12 @@
 package repository
 
-import "gorm.io/gorm"
+import (
+	"github.com/usmonzodasomon/test-task/internal/models"
+	"gorm.io/gorm"
+)
 
 type Users interface {
+	CreateUser(user models.User) (int64, error)
 	DeleteUser(id int64) error
 }
 

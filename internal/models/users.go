@@ -9,3 +9,9 @@ type User struct {
 	Gender      string `json:"gender"`
 	Nationality string `json:"nationality"`
 }
+
+type CreateUserInput struct {
+	Name       string `json:"name"`
+	Surname    string `json:"surname"`
+	Patronomic string `json:"patronomic"`
+}
