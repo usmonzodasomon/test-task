@@ -23,5 +23,5 @@ func (r *PersonRepo) AddPerson(user models.Person) (int64, error) {
 }
 
 func (r *PersonRepo) DeletePerson(id int64) error {
-	return r.db.Exec("DELETE FROM users WHERE id = $1", id).Error
+	return r.db.Delete(&models.Person{}, id).Error
 }
