@@ -27,7 +27,7 @@ func main() {
 	dbConn := db.InitDB()
 	repos := repository.NewRepository(dbConn)
 	service := service.NewService(repos)
-	handler := handler.NewHandler(service)
+	handler := handler.NewHandler(service, logg)
 
 	srv := new(test_task.Server)
 	go func() {

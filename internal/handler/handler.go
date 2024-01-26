@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log/slog"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,10 +10,14 @@ import (
 
 type handler struct {
 	service *service.Service
+	logg    *slog.Logger
 }
 
-func NewHandler(service *service.Service) *handler {
-	return &handler{service: service}
+func NewHandler(service *service.Service, logg *slog.Logger) *handler {
+	return &handler{
+		service: service,
+		logg:    logg,
+	}
 }
 
 func (h *handler) InitRoutes() *gin.Engine {
@@ -22,6 +27,8 @@ func (h *handler) InitRoutes() *gin.Engine {
 		api.GET("/ping", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"message": "pong"})
 		})
+
+		api.DELETE("/users/:id", h.DeleteUser)
 	}
 	return router
 }

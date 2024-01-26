@@ -2,10 +2,16 @@ package repository
 
 import "gorm.io/gorm"
 
+type Users interface {
+	DeleteUser(id int64) error
+}
+
 type Repository struct {
-	db *gorm.DB
+	Users
 }
 
 func NewRepository(db *gorm.DB) *Repository {
-	return &Repository{db: db}
+	return &Repository{
+		Users: NewUsersRepo(db),
+	}
 }
