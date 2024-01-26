@@ -72,7 +72,7 @@ func (s *PersonService) AddPerson(person models.AddPersonInput) (int64, error) {
 	var PersonDB models.Person
 	PersonDB.Name = person.Name
 	PersonDB.Surname = person.Surname
-	PersonDB.Patronomic = person.Patronomic
+	PersonDB.Patronomic = person.Patronymic
 	PersonDB.Age = result.age
 	PersonDB.Gender = result.gender
 	PersonDB.Nationality = result.nationality
