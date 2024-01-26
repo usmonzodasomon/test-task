@@ -25,6 +25,11 @@ func main() {
 	}
 
 	dbConn := db.InitDB()
+	if err := db.Migrate(dbConn); err != nil {
+		logg.Error("Error occured while migrating: ", logger.Err(err))
+		return
+	}
+
 	repos := repository.NewRepository(dbConn)
 	service := service.NewService(repos)
 	handler := handler.NewHandler(service, logg)
