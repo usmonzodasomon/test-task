@@ -1,6 +1,6 @@
 package models
 
-type User struct {
+type Person struct {
 	ID          int64  `json:"id" gorm:"primary_key"`
 	Name        string `json:"name"`
 	Surname     string `json:"surname"`
@@ -10,7 +10,7 @@ type User struct {
 	Nationality string `json:"nationality"`
 }
 
-type CreateUserInput struct {
+type AddPersonInput struct {
 	Name       string `json:"name"`
 	Surname    string `json:"surname"`
 	Patronomic string `json:"patronomic"`

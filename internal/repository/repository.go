@@ -5,17 +5,17 @@ import (
 	"gorm.io/gorm"
 )
 
-type Users interface {
-	CreateUser(user models.User) (int64, error)
-	DeleteUser(id int64) error
+type Person interface {
+	AddPerson(user models.Person) (int64, error)
+	DeletePerson(id int64) error
 }
 
 type Repository struct {
-	Users
+	Person
 }
 
 func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{
-		Users: NewUsersRepo(db),
+		Person: NewPersonRepo(db),
 	}
 }

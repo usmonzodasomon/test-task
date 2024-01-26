@@ -27,8 +27,8 @@ func (h *handler) InitRoutes() *gin.Engine {
 		api.GET("/ping", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"message": "pong"})
 		})
-		api.POST("/users", h.CreateUser)
-		api.DELETE("/users/:id", h.DeleteUser)
+		api.POST("/person", h.AddPerson)
+		api.DELETE("/person/:id", h.DeletePerson)
 	}
 	return router
 }

@@ -8,18 +8,18 @@ import (
 	"github.com/usmonzodasomon/test-task/internal/repository"
 )
 
-type Users interface {
-	CreateUser(user models.CreateUserInput) (int64, error)
-	DeleteUser(id int64) error
+type Person interface {
+	AddPerson(user models.AddPersonInput) (int64, error)
+	DeletePerson(id int64) error
 }
 
 type Service struct {
 	Client
-	Users
+	Person
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Users: NewUsersService(*repos, client.NewUsersClient(&http.Client{})),
+		Person: NewPersonService(*repos, client.NewUsersClient(&http.Client{})),
 	}
 }

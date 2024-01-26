@@ -5,23 +5,23 @@ import (
 	"gorm.io/gorm"
 )
 
-type UsersRepo struct {
+type PersonRepo struct {
 	db *gorm.DB
 }
 
-func NewUsersRepo(db *gorm.DB) *UsersRepo {
-	return &UsersRepo{
+func NewPersonRepo(db *gorm.DB) *PersonRepo {
+	return &PersonRepo{
 		db: db,
 	}
 }
 
-func (r *UsersRepo) CreateUser(user models.User) (int64, error) {
+func (r *PersonRepo) AddPerson(user models.Person) (int64, error) {
 	if err := r.db.Create(&user).Error; err != nil {
 		return 0, err
 	}
 	return user.ID, nil
 }
 
-func (r *UsersRepo) DeleteUser(id int64) error {
+func (r *PersonRepo) DeletePerson(id int64) error {
 	return r.db.Exec("DELETE FROM users WHERE id = $1", id).Error
 }

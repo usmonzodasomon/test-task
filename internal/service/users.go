@@ -15,19 +15,19 @@ type Client interface {
 	GetNationality(name string) (string, error)
 }
 
-type UsersService struct {
+type PersonService struct {
 	repo   repository.Repository
 	client Client
 }
 
-func NewUsersService(repo repository.Repository, client Client) *UsersService {
-	return &UsersService{
+func NewPersonService(repo repository.Repository, client Client) *PersonService {
+	return &PersonService{
 		repo:   repo,
 		client: client,
 	}
 }
 
-func (s *UsersService) CreateUser(user models.CreateUserInput) (int64, error) {
+func (s *PersonService) AddPerson(person models.AddPersonInput) (int64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()
 	r, ctx := errgroup.WithContext(ctx)
@@ -39,7 +39,7 @@ func (s *UsersService) CreateUser(user models.CreateUserInput) (int64, error) {
 	}
 
 	r.Go(func() error {
-		age, err := s.client.GetAge(user.Name)
+		age, err := s.client.GetAge(person.Name)
 		if err != nil {
 			return err
 		}
@@ -48,7 +48,7 @@ func (s *UsersService) CreateUser(user models.CreateUserInput) (int64, error) {
 	})
 
 	r.Go(func() error {
-		gender, err := s.client.GetGender(user.Name)
+		gender, err := s.client.GetGender(person.Name)
 		if err != nil {
 			return err
 		}
@@ -57,7 +57,7 @@ func (s *UsersService) CreateUser(user models.CreateUserInput) (int64, error) {
 	})
 
 	r.Go(func() error {
-		nationality, err := s.client.GetNationality(user.Name)
+		nationality, err := s.client.GetNationality(person.Name)
 		if err != nil {
 			return err
 		}
@@ -69,17 +69,17 @@ func (s *UsersService) CreateUser(user models.CreateUserInput) (int64, error) {
 		return 0, err
 	}
 
-	var UserDB models.User
-	UserDB.Name = user.Name
-	UserDB.Surname = user.Surname
-	UserDB.Patronomic = user.Patronomic
-	UserDB.Age = result.age
-	UserDB.Gender = result.gender
-	UserDB.Nationality = result.nationality
+	var PersonDB models.Person
+	PersonDB.Name = person.Name
+	PersonDB.Surname = person.Surname
+	PersonDB.Patronomic = person.Patronomic
+	PersonDB.Age = result.age
+	PersonDB.Gender = result.gender
+	PersonDB.Nationality = result.nationality
 
-	return s.repo.CreateUser(UserDB)
+	return s.repo.AddPerson(PersonDB)
 }
 
-func (s *UsersService) DeleteUser(id int64) error {
-	return s.repo.DeleteUser(id)
+func (s *PersonService) DeletePerson(id int64) error {
+	return s.repo.DeletePerson(id)
 }
