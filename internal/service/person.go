@@ -80,6 +80,10 @@ func (s *PersonService) AddPerson(person models.AddPersonInput) (int64, error) {
 	return s.repo.AddPerson(PersonDB)
 }
 
+func (s *PersonService) ChangePerson(id int64, person models.Person) error {
+	return s.repo.ChangePerson(id, person)
+}
+
 func (s *PersonService) DeletePerson(id int64) error {
 	return s.repo.DeletePerson(id)
 }

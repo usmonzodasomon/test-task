@@ -28,6 +28,7 @@ func (h *handler) InitRoutes() *gin.Engine {
 			c.JSON(http.StatusOK, gin.H{"message": "pong"})
 		})
 		api.POST("/person", h.AddPerson)
+		api.PATCH("/person/:id", h.ChangePerson)
 		api.DELETE("/person/:id", h.DeletePerson)
 	}
 	return router

@@ -15,11 +15,41 @@ func NewPersonRepo(db *gorm.DB) *PersonRepo {
 	}
 }
 
-func (r *PersonRepo) AddPerson(user models.Person) (int64, error) {
-	if err := r.db.Create(&user).Error; err != nil {
+func (r *PersonRepo) AddPerson(person models.Person) (int64, error) {
+	if err := r.db.Create(&person).Error; err != nil {
 		return 0, err
 	}
-	return user.ID, nil
+	return person.ID, nil
+}
+
+func (r *PersonRepo) ChangePerson(id int64, person models.Person) error {
+	updates := map[string]interface{}{}
+
+	if person.Name != "" {
+		updates["name"] = person.Name
+	}
+
+	if person.Surname != "" {
+		updates["surname"] = person.Surname
+	}
+
+	if person.Patronomic != "" {
+		updates["patronomic"] = person.Patronomic
+	}
+
+	if person.Age != 0 {
+		updates["age"] = person.Age
+	}
+
+	if person.Gender != "" {
+		updates["gender"] = person.Gender
+	}
+
+	if person.Nationality != "" {
+		updates["nationality"] = person.Nationality
+	}
+
+	return r.db.Model(&models.Person{}).Where("id = ?", id).Updates(updates).Error
 }
 
 func (r *PersonRepo) DeletePerson(id int64) error {

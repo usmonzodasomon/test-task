@@ -7,6 +7,7 @@ import (
 
 type Person interface {
 	AddPerson(user models.Person) (int64, error)
+	ChangePerson(id int64, person models.Person) error
 	DeletePerson(id int64) error
 }
 
