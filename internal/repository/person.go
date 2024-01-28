@@ -15,6 +15,14 @@ func NewPersonRepo(db *gorm.DB) *PersonRepo {
 	}
 }
 
+func (r *PersonRepo) GetPersonByID(id int64) (models.Person, error) {
+	var person models.Person
+	if err := r.db.Where("id = ?", id).First(&person).Error; err != nil {
+		return models.Person{}, err
+	}
+	return person, nil
+}
+
 func (r *PersonRepo) GetPerson(params models.GetPersonRequest) ([]models.Person, error) {
 	paramsMap := map[string]interface{}{}
 
