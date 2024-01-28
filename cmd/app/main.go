@@ -15,6 +15,7 @@ import (
 	"github.com/usmonzodasomon/test-task/internal/handler"
 	"github.com/usmonzodasomon/test-task/internal/repository"
 	"github.com/usmonzodasomon/test-task/internal/service"
+	"github.com/usmonzodasomon/test-task/pkg/database.go"
 	"github.com/usmonzodasomon/test-task/pkg/logger"
 )
 
@@ -24,7 +25,7 @@ func main() {
 		logg.Error("Failed to load godotenv", logger.Err(err))
 	}
 
-	dbConn := db.InitDB()
+	dbConn := database.InitDB()
 	if err := db.Migrate(dbConn); err != nil {
 		logg.Error("Error occured while migrating: ", logger.Err(err))
 		return
@@ -49,7 +50,7 @@ func main() {
 
 	logg.Info("Closing server...")
 
-	if err := db.CloseDbConnection(dbConn); err != nil {
+	if err := database.CloseDbConnection(dbConn); err != nil {
 		logg.Error(err.Error())
 	}
 
