@@ -46,7 +46,7 @@ func (h *handler) GetPerson(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, people)
-	h.logg.Info(fmt.Sprintf("Get users with params: %v", params))
+	h.logg.Info(fmt.Sprintf("Get users with params: %+#v", params))
 }
 
 func (h *handler) AddPerson(c *gin.Context) {
@@ -70,6 +70,7 @@ func (h *handler) AddPerson(c *gin.Context) {
 }
 
 func (h *handler) ChangePerson(c *gin.Context) {
+	h.logg.Info(fmt.Sprintf("Change user with id: %s", c.Param("id")))
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
 		h.newErrorResponse(c, http.StatusBadRequest, "invalid id param")
@@ -91,6 +92,7 @@ func (h *handler) ChangePerson(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status": "ok",
 	})
+	h.logg.Info(fmt.Sprintf("User with id %d changed", id))
 }
 
 func (h *handler) DeletePerson(c *gin.Context) {
