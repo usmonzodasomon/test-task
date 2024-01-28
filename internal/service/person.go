@@ -9,12 +9,6 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-type Client interface {
-	GetAge(name string) (int, error)
-	GetGender(name string) (string, error)
-	GetNationality(name string) (string, error)
-}
-
 type PersonService struct {
 	repo   repository.Repository
 	client Client

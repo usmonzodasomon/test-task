@@ -16,7 +16,6 @@ type Person interface {
 }
 
 type Service struct {
-	Client
 	Person
 }
 
