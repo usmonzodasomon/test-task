@@ -10,34 +10,28 @@ import (
 )
 
 func (h *handler) GetPerson(c *gin.Context) {
-	limit, err := strconv.Atoi(c.DefaultQuery("limit", "10"))
+	var params models.GetPersonRequest
+	var err error
+
+	params.Limit, err = strconv.Atoi(c.DefaultQuery("limit", "10"))
 	if err != nil {
 		h.newErrorResponse(c, http.StatusBadRequest, "invalid limit query")
 		return
 	}
 
-	offset, err := strconv.Atoi(c.DefaultQuery("offset", "0"))
+	params.Offset, err = strconv.Atoi(c.DefaultQuery("offset", "0"))
 	if err != nil {
 		h.newErrorResponse(c, http.StatusBadRequest, "invalid offset query")
 		return
 	}
 
-	age, err := strconv.Atoi(c.DefaultQuery("age", "-1"))
+	params.Age, err = strconv.Atoi(c.DefaultQuery("age", "-1"))
 	if err != nil {
 		h.newErrorResponse(c, http.StatusBadRequest, "invalid age query")
 		return
 	}
-	gender := c.Query("gender")
-	nationality := c.Query("nationality")
-
-	params := models.GetPersonRequest{
-		Limit:  limit,
-		Offset: offset,
-
-		Age:         age,
-		Gender:      gender,
-		Nationality: nationality,
-	}
+	params.Gender = c.Query("gender")
+	params.Nationality = c.Query("nationality")
 
 	people, err := h.service.GetPerson(params)
 	if err != nil {
