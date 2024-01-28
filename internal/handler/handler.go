@@ -23,6 +23,7 @@ func NewHandler(service *service.Service, logg *slog.Logger) *handler {
 func (h *handler) InitRoutes() *gin.Engine {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.New()
+	router.Use(gin.Recovery())
 	router.Use(Logger(h.logg))
 	api := router.Group("/api")
 	{
