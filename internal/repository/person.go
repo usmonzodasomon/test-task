@@ -18,9 +18,6 @@ func NewPersonRepo(db *gorm.DB) *PersonRepo {
 func (r *PersonRepo) GetPerson(params models.GetPersonRequest) ([]models.Person, error) {
 	paramsMap := map[string]interface{}{}
 
-	paramsMap["limit"] = params.Limit
-	paramsMap["offset"] = params.Offset
-
 	if params.Age != -1 {
 		paramsMap["age"] = params.Age
 	}
@@ -34,7 +31,7 @@ func (r *PersonRepo) GetPerson(params models.GetPersonRequest) ([]models.Person,
 	}
 
 	var people []models.Person
-	if err := r.db.Where(paramsMap).Find(&people).Error; err != nil {
+	if err := r.db.Where(paramsMap).Find(&people).Limit(params.Limit).Offset(params.Offset).Error; err != nil {
 		return nil, err
 	}
 	return people, nil
