@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/usmonzodasomon/test-task/internal/client"
@@ -79,10 +80,26 @@ func (s *PersonService) AddPerson(person models.AddPersonInput) (int64, error) {
 	return s.repo.AddPerson(PersonDB)
 }
 
+var ErrRecordNotFound = errors.New("record not found")
+
 func (s *PersonService) ChangePerson(id int64, person models.Person) error {
+	person, err := s.repo.GetPersonByID(id)
+	if err != nil {
+		if errors.Is(err, repository.ErrRecordNotFound) {
+			return ErrRecordNotFound
+		}
+		return err
+	}
 	return s.repo.ChangePerson(id, person)
 }
 
 func (s *PersonService) DeletePerson(id int64) error {
+	_, err := s.repo.GetPersonByID(id)
+	if err != nil {
+		if errors.Is(err, repository.ErrRecordNotFound) {
+			return ErrRecordNotFound
+		}
+		return err
+	}
 	return s.repo.DeletePerson(id)
 }

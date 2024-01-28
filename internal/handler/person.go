@@ -1,12 +1,14 @@
 package handler
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/usmonzodasomon/test-task/internal/models"
+	"github.com/usmonzodasomon/test-task/internal/service"
 )
 
 func (h *handler) GetPerson(c *gin.Context) {
@@ -86,6 +88,11 @@ func (h *handler) ChangePerson(c *gin.Context) {
 	}
 
 	if err := h.service.ChangePerson(id, input); err != nil {
+		if errors.Is(err, service.ErrRecordNotFound) {
+			h.logg.Error(err.Error())
+			h.newErrorResponse(c, http.StatusNotFound, "person not found")
+			return
+		}
 		h.logg.Error(err.Error())
 		h.newErrorResponse(c, http.StatusInternalServerError, "internal server error")
 		return
@@ -107,6 +114,11 @@ func (h *handler) DeletePerson(c *gin.Context) {
 	}
 
 	if err := h.service.DeletePerson(id); err != nil {
+		if errors.Is(err, service.ErrRecordNotFound) {
+			h.logg.Error(err.Error())
+			h.newErrorResponse(c, http.StatusNotFound, "person not found")
+			return
+		}
 		h.logg.Error(err.Error())
 		h.newErrorResponse(c, http.StatusInternalServerError, "internal server error")
 		return

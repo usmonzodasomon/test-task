@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"errors"
+
 	"github.com/usmonzodasomon/test-task/internal/models"
 	"gorm.io/gorm"
 )
@@ -15,9 +17,14 @@ func NewPersonRepo(db *gorm.DB) *PersonRepo {
 	}
 }
 
+var ErrRecordNotFound = errors.New("record not found")
+
 func (r *PersonRepo) GetPersonByID(id int64) (models.Person, error) {
 	var person models.Person
 	if err := r.db.Where("id = ?", id).First(&person).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return models.Person{}, ErrRecordNotFound
+		}
 		return models.Person{}, err
 	}
 	return person, nil
