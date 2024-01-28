@@ -12,8 +12,8 @@ type Genderize struct {
 	Probability float64 `json:"probability"`
 }
 
-func (c *UsersClient) GetGender(name string) (string, error) {
-	resp, err := c.Client.Get(genderURL + name)
+func (c *PersonClient) GetGender(name string) (string, error) {
+	resp, err := c.client.Get(genderURL + name)
 	if err != nil {
 		return "", err
 	}

@@ -11,8 +11,8 @@ type Agify struct {
 	Age   int    `json:"age"`
 }
 
-func (c *UsersClient) GetAge(name string) (int, error) {
-	resp, err := c.Client.Get(ageURL + name)
+func (c *PersonClient) GetAge(name string) (int, error) {
+	resp, err := c.client.Get(ageURL + name)
 	if err != nil {
 		return 0, err
 	}

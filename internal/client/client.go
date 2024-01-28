@@ -10,12 +10,18 @@ const (
 	nationilizeURL = "https://api.nationalize.io/?name="
 )
 
-type UsersClient struct {
-	Client *http.Client
+type Person interface {
+	GetAge(name string) (int, error)
+	GetGender(name string) (string, error)
+	GetNationality(name string) (string, error)
 }
 
-func NewUsersClient(client *http.Client) *UsersClient {
-	return &UsersClient{
-		Client: client,
+type Client struct {
+	Person
+}
+
+func NewUsersClient(client *http.Client) *Client {
+	return &Client{
+		Person: NewPersonClient(client),
 	}
 }

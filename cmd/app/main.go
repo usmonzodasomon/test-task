@@ -37,8 +37,8 @@ func main() {
 	srv := new(test_task.Server)
 	go func() {
 		if err := srv.Run(os.Getenv("PORT"), handler.InitRoutes()); !errors.Is(err, http.ErrServerClosed) && err != nil {
-			logg.Error("Error occured while starting server: ", logger.Err(err))
-			return
+			logg.Error("Error occured while starting server:", logger.Err(err))
+			os.Exit(1)
 		}
 	}()
 	logg.Info("Server started...")

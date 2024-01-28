@@ -16,8 +16,8 @@ type Nationalize struct {
 	Country []CountryInfo `json:"country"`
 }
 
-func (c *UsersClient) GetNationality(name string) (string, error) {
-	resp, err := c.Client.Get(nationilizeURL + name)
+func (c *PersonClient) GetNationality(name string) (string, error) {
+	resp, err := c.client.Get(nationilizeURL + name)
 	if err != nil {
 		return "", err
 	}

@@ -21,6 +21,6 @@ type Service struct {
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Person: NewPersonService(*repos, client.NewUsersClient(&http.Client{})),
+		Person: NewPersonService(*repos, *client.NewUsersClient(&http.Client{})),
 	}
 }

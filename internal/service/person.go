@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/usmonzodasomon/test-task/internal/client"
 	"github.com/usmonzodasomon/test-task/internal/models"
 	"github.com/usmonzodasomon/test-task/internal/repository"
 	"golang.org/x/sync/errgroup"
@@ -11,10 +12,10 @@ import (
 
 type PersonService struct {
 	repo   repository.Repository
-	client Client
+	client client.Client
 }
 
-func NewPersonService(repo repository.Repository, client Client) *PersonService {
+func NewPersonService(repo repository.Repository, client client.Client) *PersonService {
 	return &PersonService{
 		repo:   repo,
 		client: client,
