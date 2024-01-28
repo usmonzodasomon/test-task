@@ -27,6 +27,10 @@ func NewPersonService(repo repository.Repository, client Client) *PersonService 
 	}
 }
 
+func (s *PersonService) GetPerson(params models.GetPersonRequest) ([]models.Person, error) {
+	return s.repo.GetPerson(params)
+}
+
 func (s *PersonService) AddPerson(person models.AddPersonInput) (int64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()

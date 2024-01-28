@@ -15,6 +15,31 @@ func NewPersonRepo(db *gorm.DB) *PersonRepo {
 	}
 }
 
+func (r *PersonRepo) GetPerson(params models.GetPersonRequest) ([]models.Person, error) {
+	paramsMap := map[string]interface{}{}
+
+	paramsMap["limit"] = params.Limit
+	paramsMap["offset"] = params.Offset
+
+	if params.Age != -1 {
+		paramsMap["age"] = params.Age
+	}
+
+	if params.Gender != "" {
+		paramsMap["gender"] = params.Gender
+	}
+
+	if params.Nationality != "" {
+		paramsMap["nationality"] = params.Nationality
+	}
+
+	var people []models.Person
+	if err := r.db.Where(paramsMap).Find(&people).Error; err != nil {
+		return nil, err
+	}
+	return people, nil
+}
+
 func (r *PersonRepo) AddPerson(person models.Person) (int64, error) {
 	if err := r.db.Create(&person).Error; err != nil {
 		return 0, err

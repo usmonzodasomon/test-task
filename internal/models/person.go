@@ -15,3 +15,12 @@ type AddPersonInput struct {
 	Surname    string `json:"surname"`
 	Patronymic string `json:"patronymic"`
 }
+
+type GetPersonRequest struct {
+	Limit  int
+	Offset int
+
+	Age         int
+	Gender      string
+	Nationality string
+}
