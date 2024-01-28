@@ -63,7 +63,7 @@ func (h *handler) AddPerson(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusCreated, gin.H{
 		"id": id,
 	})
 	h.logg.Info(fmt.Sprintf("User with id %d created", id))
